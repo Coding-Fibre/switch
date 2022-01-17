@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://cdn.jsdelivr.net/gh/mortezaom/google-sans-cdn@master/fonts.css"
+    rel="stylesheet"
+  />
+  <title>Checkbox</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #defceb;
+      font-family: "Google Sans";
+    }
+
+    .container {
+      display: flex;
+      align-items: center;
+      position: relative;
+      height: 44px;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .container::before, .container::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 10px;
+    }
+    .container::before {
+      top: 0;
+      background: linear-gradient(to bottom, #defceb 0%, rgb(0, 0, 0, 0) 100%);
+    }
+    .container::after {
+      bottom: 0;
+      background: linear-gradient(to top, #defceb 0%, rgb(0, 0, 0, 0) 100%);
+    }
+    .container.loading::before {
+      background: linear-gradient(to bottom, #d8ddff 0%, rgb(0, 0, 0, 0) 100%) !important;
+    }
+    .container.loading::after {
+      background: linear-gradient(to top, #d8ddff 0%, rgb(0, 0, 0, 0) 100%) !important;
+    }
+    .container.active::before {
+      background: linear-gradient(to bottom, #ffdede 0%, rgb(0, 0, 0, 0) 100%);
+    }
+    .container.active::after {
+      background: linear-gradient(to top, #ffdede 0%, rgb(0, 0, 0, 0) 100%);
+    }
+    .container .text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 34px;
+      height: 34px;
+      font-weight: 500;
+      color:rgb(53, 53, 53);
+      transition: all .3s ease-in-out;
+    }
+    .container.loading .text {
+      margin-bottom: 68px !important
+    }
+    .container.active .text {
+      margin-bottom: 136px;
+    }
+    .container.loading .switch {
+      pointer-events: none;
+    }
+    .container.loading .switch .slider {
+      width: 34px;
+      background-color: #9b999b;
+    }
+    .container.loading .switch .slider::before {
+      border: 3px solid #9b999b;
+      border-top: 3px solid #6174f0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+    }
+    .container.active .switch .slider::before {
+      right: 3px;
+      left: unset;
+    }
+    .container.active.loading .switch .slider::before {
+      right: 0px;
+      left: unset;
+    }
+    
+    .switch {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      height: 34px;
+      width: 56px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .switch .slider {
+      position: absolute;
+      z-index: 10;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+      background-color: #1bc665;
+      transition: all .3s ease-in-out
+    }
+    .switch .slider::before {
+      content: "";
+      position: absolute;
+      height: 28px;
+      width: 28px;
+      left: 3px;
+      bottom: 3px;
+      background-color: rgb(241, 241, 241);
+      transition: .3s ease;
+      transition-property: background-color;
+      animation: spin 1s ease infinite;
+    }
+    .container.active .switch  .slider.round {
+      background-color: #e1413e;
+    }
+    .switch .slider.round {
+      border-radius: 28px;
+      box-shadow: 2px 2px 5px rgb(0, 0, 0, .1);
+    }
+    .switch .slider.round::before {
+      border-radius: 50%;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      } to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider round"></span>
+    </label>
+    <div class="text">
+      <span>
+        Switch On
+      </span>
+      <span>
+        Loading...
+      </span>
+      <span>
+        Switch Off
+      </span>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector(".switch input").addEventListener("change", function() {
+      let container = document.querySelector(".container");
+      let checked = this.checked;
+      let loading = true;
+
+      container.classList.add("loading");
+      document.body.style.backgroundColor = "#D8DDFF";
+      
+      setTimeout(() => {
+        loading = false;
+        container.classList.remove("loading");
+        if(checked) {
+          container.classList.add("active");
+          document.body.style.backgroundColor = "#FFDEDE";
+        } else {
+          container.classList.remove("active");
+          document.body.style.backgroundColor = "#DEFCEB";
+        }
+      }, 1000)
+    })
+
+  </script>
+</body>
+</html>
